@@ -13,8 +13,8 @@ import java.util.List;
  * Created by majlen on 4.7.16.
  */
 public class KeyValueManager {
-    public static PluginConfig loadPlugin(String name, Class clazz) {
-        KeyValuePluginTimer timer = new KeyValuePluginTimer(clazz);
+    public static PluginConfig loadPlugin(String name, Class clazz, StorageManager storage) {
+        KeyValuePluginTimer timer = new KeyValuePluginTimer(clazz, storage);
         PluginConfig config = new PluginConfig(timer, name);
 
         if (clazz.isAnnotationPresent(KeyValueObject.class)) {

@@ -2,7 +2,7 @@ package tommon.plugins.timers;
 
 import tommon.annotations.KeyValueMonitor;
 import tommon.annotations.KeyValueObject;
-import tommon.managers.DBManager;
+import tommon.managers.StorageManager;
 import tommon.verifiers.LocalhostAllowHostnameVerifier;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -22,14 +22,16 @@ public class KeyValuePluginTimer extends Timers {
     private URL url;
     private String delimiter;
     private Map<String, String> attr = new HashMap<String, String>();
+    StorageManager storage;
 
-    public KeyValuePluginTimer(Class clazz) {
+    public KeyValuePluginTimer(Class clazz, StorageManager storage) {
         super(0);
 
+        this.storage = storage;
         int periodInMinutes;
 
         if (clazz.isAnnotationPresent(KeyValueObject.class)) {
-            KeyValueObject ann = (KeyValueObject)clazz.getAnnotation(KeyValueObject.class);
+            KeyValueObject ann = (KeyValueObject) clazz.getAnnotation(KeyValueObject.class);
             try {
                 url = new URL(ann.url());
             } catch (MalformedURLException e) {
@@ -47,15 +49,21 @@ public class KeyValuePluginTimer extends Timers {
 
         for (Field f : fs) {
             if (f.isAnnotationPresent(KeyValueMonitor.class)) {
-                KeyValueMonitor ann = (KeyValueMonitor)f.getAnnotation(KeyValueMonitor.class);
+                KeyValueMonitor ann = (KeyValueMonitor) f.getAnnotation(KeyValueMonitor.class);
                 attr.put(ann.value(), f.getName());
             }
         }
 
-        DBManager.addTable(table, attr.values().toArray(new String[0]));
+        try {
+            storage.addTable(table, attr.values().toArray(new String[0]));
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not create new table");
+            System.out.println(e.getMessage());
+            return;
+        }
 
         timer = new Timer();
-        long period = 60000*periodInMinutes;
+        long period = 60000 * periodInMinutes;
         timer.scheduleAtFixedRate(this, 200, period);
     }
 
@@ -85,10 +93,15 @@ public class KeyValuePluginTimer extends Timers {
 
 
         } catch (IOException e) {
-            System.out.println(e.getClass().getName()+ ": " + e.getMessage());
+            System.out.println(e.getClass().getName() + ": " + e.getMessage());
         }
 
         String[] typeRef = new String[0];
-        DBManager.addRow(table, "OK", columns.toArray(typeRef), values.toArray(typeRef));
+        try {
+            storage.addRow(table, columns.toArray(typeRef), values.toArray(typeRef));
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not store values");
+            System.out.println(e.getMessage());
+        }
     }
 }

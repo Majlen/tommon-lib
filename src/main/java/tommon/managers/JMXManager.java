@@ -14,8 +14,8 @@ import java.util.List;
  * Created by majlen on 28.6.16.
  */
 public class JMXManager {
-    public static PluginConfig loadPlugin(String name, Class clazz) {
-        JMXPluginTimer timer = new JMXPluginTimer(clazz);
+    public static PluginConfig loadPlugin(String name, Class clazz, StorageManager storage) {
+        JMXPluginTimer timer = new JMXPluginTimer(clazz, storage);
         PluginConfig config = new PluginConfig(timer, name);
 
         if (clazz.isAnnotationPresent(JMXObject.class)) {

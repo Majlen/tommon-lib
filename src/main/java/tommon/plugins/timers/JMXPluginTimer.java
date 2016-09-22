@@ -3,7 +3,7 @@ package tommon.plugins.timers;
 import tommon.annotations.JMXCompositeMonitor;
 import tommon.annotations.JMXMonitor;
 import tommon.annotations.JMXObject;
-import tommon.managers.DBManager;
+import tommon.managers.StorageManager;
 
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -21,10 +21,12 @@ public class JMXPluginTimer extends Timers {
     private String table;
     private String JMXname;
     private Map<Annotation, String> attr = new HashMap<Annotation, String>();
+    private StorageManager storage;
 
-    public JMXPluginTimer(Class clazz) {
+    public JMXPluginTimer(Class clazz, StorageManager storage) {
         super(0);
 
+        this.storage = storage;
         int periodInMinutes;
 
         if (clazz.isAnnotationPresent(JMXObject.class)) {
@@ -48,7 +50,13 @@ public class JMXPluginTimer extends Timers {
             }
         }
 
-        DBManager.addTable(table, attr.values().toArray(new String[0]));
+        try {
+            storage.addTable(table, attr.values().toArray(new String[0]));
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not create new table");
+            System.out.println(e.getMessage());
+            return;
+        }
 
         timer = new Timer();
         long period = 60000*periodInMinutes;
@@ -97,6 +105,11 @@ public class JMXPluginTimer extends Timers {
         }
 
         String[] typeRef = new String[0];
-        DBManager.addRow(table, "OK", columns.toArray(typeRef), values.toArray(typeRef));
+        try {
+            storage.addRow(table, columns.toArray(typeRef), values.toArray(typeRef));
+        } catch (Exception e) {
+            System.out.println("ERROR: Could not store values");
+            System.out.println(e.getMessage());
+        }
     }
 }

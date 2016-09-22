@@ -18,7 +18,7 @@ import java.util.Properties;
  * Created by majlen on 14.7.16.
  */
 public class PluginsManager {
-    public static PluginConfig[] getPlugins(ClassLoader parent, String pluginsDir) {
+    public static PluginConfig[] getPlugins(ClassLoader parent, String pluginsDir, StorageManager storage) {
         ArrayList<PluginConfig> pluginList = new ArrayList<>();
 
         File dir = new File(pluginsDir);
@@ -48,9 +48,9 @@ public class PluginsManager {
                             for (Annotation ann : anns) {
                                 PluginConfig config = null;
                                 if (ann.annotationType().equals(JMXObject.class)) {
-                                    config = JMXManager.loadPlugin(plugin, clazz);
+                                    config = JMXManager.loadPlugin(plugin, clazz, storage);
                                 } else if (ann.annotationType().equals(KeyValueObject.class)) {
-                                    config = KeyValueManager.loadPlugin(plugin, clazz);
+                                    config = KeyValueManager.loadPlugin(plugin, clazz, storage);
                                 } else {
                                     System.out.println("Unknown plugin annotation " + ann.toString());
                                 }
