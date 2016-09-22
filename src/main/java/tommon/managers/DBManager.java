@@ -21,23 +21,6 @@ public final class DBManager {
         DriverManager.deregisterDriver(driver);
     }
 
-    public static String DBgetMessage(String db) {
-        String out;
-        try {
-            Statement s = sqlcon.createStatement();
-            ResultSet rs = s.executeQuery("SELECT msg FROM " + db + " ORDER BY date DESC;");
-
-            rs.next();
-            out = rs.getString("msg");
-        } catch (Exception e) {
-            System.out.println("Cannot get data out of DB");
-            System.out.println("ERROR: " + e.getMessage());
-            return "Error";
-        }
-
-        return out;
-    }
-
     public static void addTable(String table, String[] columns) {
         String cols = deArray(columns);
 
@@ -93,16 +76,6 @@ public final class DBManager {
         } catch (Exception e) {
             System.out.println("Cannot get data from DB");
             System.out.println("ERROR: " + e.getMessage());
-        }
-    }
-
-    public static void addErr(String table, String msg) {
-        try {
-            Statement s = sqlcon.createStatement();
-            s.executeUpdate("INSERT INTO "+table+" (date, msg) VALUES ("+System.currentTimeMillis()/1000+", \""+msg+"\");");
-        } catch (Exception e) {
-            System.out.println("Cannot insert data to DB: " + table +": " + msg);
-            System.out.println("ERROR: "+e.getMessage());
         }
     }
 
