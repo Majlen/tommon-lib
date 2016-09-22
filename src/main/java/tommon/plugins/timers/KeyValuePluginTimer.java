@@ -6,7 +6,6 @@ import tommon.managers.DBManager;
 import tommon.verifiers.LocalhostAllowHostnameVerifier;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.ServletContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,8 +23,8 @@ public class KeyValuePluginTimer extends Timers {
     private String delimiter;
     private Map<String, String> attr = new HashMap<String, String>();
 
-    public KeyValuePluginTimer(ServletContext context, Class clazz) {
-        super(0, context);
+    public KeyValuePluginTimer(Class clazz) {
+        super(0);
 
         int periodInMinutes;
 

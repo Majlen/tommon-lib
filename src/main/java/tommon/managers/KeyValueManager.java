@@ -5,7 +5,6 @@ import tommon.annotations.KeyValueObject;
 import tommon.plugins.PluginConfig;
 import tommon.plugins.timers.KeyValuePluginTimer;
 
-import javax.servlet.ServletContext;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,8 @@ import java.util.List;
  * Created by majlen on 4.7.16.
  */
 public class KeyValueManager {
-    public static PluginConfig loadPlugin(String name, Class clazz, ServletContext context) {
-        KeyValuePluginTimer timer = new KeyValuePluginTimer(context, clazz);
+    public static PluginConfig loadPlugin(String name, Class clazz) {
+        KeyValuePluginTimer timer = new KeyValuePluginTimer(clazz);
         PluginConfig config = new PluginConfig(timer, name);
 
         if (clazz.isAnnotationPresent(KeyValueObject.class)) {

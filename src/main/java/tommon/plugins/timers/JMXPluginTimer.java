@@ -8,7 +8,6 @@ import tommon.managers.DBManager;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import javax.management.openmbean.CompositeData;
-import javax.servlet.ServletContext;
 import java.lang.annotation.Annotation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
@@ -23,8 +22,8 @@ public class JMXPluginTimer extends Timers {
     private String JMXname;
     private Map<Annotation, String> attr = new HashMap<Annotation, String>();
 
-    public JMXPluginTimer(ServletContext context, Class clazz) {
-        super(0, context);
+    public JMXPluginTimer(Class clazz) {
+        super(0);
 
         int periodInMinutes;
 
