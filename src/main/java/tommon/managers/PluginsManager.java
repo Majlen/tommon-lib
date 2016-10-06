@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 /**
@@ -71,7 +72,7 @@ public class PluginsManager {
             }
         }
 
-
+        Collections.sort(pluginList, new PluginConfig());
         return pluginList.toArray(new PluginConfig[0]);
     }
 }

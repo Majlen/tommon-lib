@@ -2,14 +2,19 @@ package tommon.plugins;
 
 import tommon.plugins.timers.Timers;
 
+import java.util.Comparator;
+
 /**
  * Created by majlen on 20.7.16.
  */
-public class PluginConfig {
+public class PluginConfig implements Comparator<PluginConfig> {
     private Timers timer;
     private String table;
     private String name;
     private String[] fields;
+
+    public PluginConfig() {
+    }
 
     public PluginConfig(Timers timer, String name) {
         this.timer = timer;
@@ -46,5 +51,10 @@ public class PluginConfig {
 
     public void setFields(String[] fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public int compare(PluginConfig o1, PluginConfig o2) {
+        return o1.getName().compareTo(o2.getName());
     }
 }
