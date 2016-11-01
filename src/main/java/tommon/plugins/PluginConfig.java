@@ -1,28 +1,39 @@
 package tommon.plugins;
 
-import tommon.plugins.timers.Timers;
-
 import java.util.Comparator;
+import java.util.TimerTask;
 
+/**
+ * Plugin configuration
+ * @author Milan Ševčík
+ */
 public class PluginConfig implements Comparator<PluginConfig> {
-	private Timers timer;
+	private TimerTask timer;
 	private String table;
 	private String name;
 	private String[] fields;
 
+	/**
+	 * Empty constructor necessary for implementing Comparator interface
+	 */
 	public PluginConfig() {
 	}
 
-	public PluginConfig(Timers timer, String name) {
+	/**
+	 * Constructor
+	 * @param timer used Timers extension
+	 * @param name name of the plugin
+	 */
+	public PluginConfig(TimerTask timer, String name) {
 		this.timer = timer;
 		this.name = name;
 	}
 
-	public Timers getTimer() {
+	public TimerTask getTimer() {
 		return timer;
 	}
 
-	public void setTimer(Timers timer) {
+	public void setTimer(TimerTask timer) {
 		this.timer = timer;
 	}
 

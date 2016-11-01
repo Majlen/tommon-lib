@@ -13,16 +13,23 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class JMXPluginTimer extends Timers {
+/**
+ * TimerTask of JMX plugins.
+ * @author Milan Ševčík
+ */
+public class JMXPluginTimer extends TimerTask {
 	private Timer timer;
 	private String table;
 	private String JMXname;
 	private Map<Annotation, String> attr = new HashMap<Annotation, String>();
 	private StorageManager storage;
 
+	/**
+	 * Constructor.
+	 * @param clazz class with plugins configuration
+	 * @param storage StorageManager implementation to use
+	 */
 	public JMXPluginTimer(Class clazz, StorageManager storage) {
-		super(0);
-
 		this.storage = storage;
 		int periodInMinutes;
 

@@ -15,7 +15,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
-public class KeyValuePluginTimer extends Timers {
+/**
+ * TimerTask of KeyValue plugins.
+ * @author Milan Ševčík
+ */
+public class KeyValuePluginTimer extends TimerTask {
 	private Timer timer;
 	private String table;
 	private URL url;
@@ -23,9 +27,12 @@ public class KeyValuePluginTimer extends Timers {
 	private Map<String, String> attr = new HashMap<String, String>();
 	StorageManager storage;
 
+	/**
+	 * Constructor.
+	 * @param clazz class with plugins configuration
+	 * @param storage StorageManager implementation to use
+	 */
 	public KeyValuePluginTimer(Class clazz, StorageManager storage) {
-		super(0);
-
 		this.storage = storage;
 		int periodInMinutes;
 

@@ -15,7 +15,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
+/**
+ * Plugins manager providing method to load all of them.
+ */
 public class PluginsManager {
+	/**
+	 * Loads all plugins from provided directory and returns their configuration.
+	 * @param parent parent ClassLoader of the newly created one
+	 * @param pluginsDir directory with plugins
+	 * @param storage StorageManager implementation to be used
+	 * @return plugin configurations
+	 */
 	public static PluginConfig[] getPlugins(ClassLoader parent, String pluginsDir, StorageManager storage) {
 		ArrayList<PluginConfig> pluginList = new ArrayList<>();
 
