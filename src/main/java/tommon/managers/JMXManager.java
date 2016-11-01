@@ -10,33 +10,30 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by majlen on 28.6.16.
- */
 public class JMXManager {
-    public static PluginConfig loadPlugin(String name, Class clazz, StorageManager storage) {
-        JMXPluginTimer timer = new JMXPluginTimer(clazz, storage);
-        PluginConfig config = new PluginConfig(timer, name);
+	public static PluginConfig loadPlugin(String name, Class clazz, StorageManager storage) {
+		JMXPluginTimer timer = new JMXPluginTimer(clazz, storage);
+		PluginConfig config = new PluginConfig(timer, name);
 
-        if (clazz.isAnnotationPresent(JMXObject.class)) {
-            JMXObject ann = (JMXObject)clazz.getAnnotation(JMXObject.class);
-            config.setTable(ann.table());
-        } else {
-            System.out.println("Wrong annotation.");
-            return null;
-        }
+		if (clazz.isAnnotationPresent(JMXObject.class)) {
+			JMXObject ann = (JMXObject) clazz.getAnnotation(JMXObject.class);
+			config.setTable(ann.table());
+		} else {
+			System.out.println("Wrong annotation.");
+			return null;
+		}
 
-        Field[] fs = clazz.getDeclaredFields();
-        List<String> l = new ArrayList<String>(fs.length);
+		Field[] fs = clazz.getDeclaredFields();
+		List<String> l = new ArrayList<String>(fs.length);
 
-        for (Field f : fs) {
-            if (f.isAnnotationPresent(JMXMonitor.class) || f.isAnnotationPresent(JMXCompositeMonitor.class)) {
-                l.add(f.getName());
-            }
-        }
+		for (Field f : fs) {
+			if (f.isAnnotationPresent(JMXMonitor.class) || f.isAnnotationPresent(JMXCompositeMonitor.class)) {
+				l.add(f.getName());
+			}
+		}
 
-        config.setFields(l.toArray(new String[0]));
-        System.out.println("INFO: loaded JMX plugin "+name);
-        return config;
-    }
+		config.setFields(l.toArray(new String[0]));
+		System.out.println("INFO: loaded JMX plugin " + name);
+		return config;
+	}
 }
