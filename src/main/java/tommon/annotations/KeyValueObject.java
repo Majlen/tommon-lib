@@ -9,10 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface KeyValueObject {
 	String table();
-
 	String url();
-
 	String delimiter();
-
 	int period() default 1;
 }
