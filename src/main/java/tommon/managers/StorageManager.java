@@ -1,6 +1,8 @@
 package tommon.managers;
 
 import java.io.PrintWriter;
+import java.time.Instant;
+import java.util.Map;
 
 public interface StorageManager {
 
@@ -10,7 +12,12 @@ public interface StorageManager {
 
 	void addRow(String table, String[] columns, String[] values) throws Exception;
 
-	void printTableCSV(String table, String[] columns, int from, int to, PrintWriter print) throws Exception;
+	@Deprecated
+	void printTableCSV(String table, String[] columns, Instant from, Instant to, PrintWriter print) throws Exception;
 
 	int getMinimumDate(String table) throws Exception;
+
+	Map<Instant, String> getColumn(String table, String column, Instant from, Instant to) throws Exception;
+
+	Map<Instant, Map<String, String>> getColumns(String table, String[] columns, Instant from, Instant to) throws Exception;
 }
